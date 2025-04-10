@@ -21,14 +21,14 @@ public class DFA {
     }
 
     /*
-    *   Run Automaton using given configuration w
+    *   Run Automaton using given input w
      */
     public boolean run(String[] w) {
         int state = this.q0;
         for (String s : w) {
-            // Assert that current input state is valid (present in alphabet)
-            if (!q.contains(state))
-                throw new IllegalArgumentException("No such state: " + s);
+            // Assert that current input is valid (present in alphabet)
+            if (!sigma.contains(s))
+                throw new IllegalArgumentException("No such word in the alphabet: " + s);
 
             TransitionInput transitionInput = new TransitionInput(state, s);
 
@@ -46,7 +46,7 @@ public class DFA {
 
     @Override
     public String toString() {
-        return  "automaton.DFA (\n" +
+        return  "DFA (\n" +
                 "Q = " + q + ",\n" +
                 "Σ = " + sigma + ",\n" +
                 "δ = " + delta + ",\n" +
@@ -61,19 +61,17 @@ public class DFA {
         Map<TransitionInput, Integer> delta = Map.of(
                 new TransitionInput(0, "0"), 1,
                 new TransitionInput(0, "1"), 1,
-                new TransitionInput(1, "0"), 2,
-                new TransitionInput(1, "1"), 2,
-                new TransitionInput(2, "0"), 1,
-                new TransitionInput(2, "1"), 1
+                new TransitionInput(1, "0"), 0,
+                new TransitionInput(1, "1"), 0
         );
 
 
         DFA automaton = new DFA(
-                Set.of(0,1,2),
+                Set.of(0,1),
                 Set.of("0", "1"),
                 delta,
                 0,
-                Set.of(0, 2)
+                Set.of(0)
         );
 
         // Print automaton structure
