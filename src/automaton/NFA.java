@@ -3,6 +3,7 @@ package automaton;
 import automaton.utils.TransitionInput;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class NFA {
     private Set<Integer> q; // Finite set of states
@@ -17,17 +18,6 @@ public class NFA {
         this.delta = delta;
         this.q0 = q0;
         this.f = f;
-    }
-
-    @Override
-    public String toString() {
-        return  "NFA (\n" +
-                "Q = " + q + ",\n" +
-                "Σ = " + sigma + ",\n" +
-                "δ = " + delta + ",\n" +
-                "q₀ = " + q0 + ",\n" +
-                "F = " + f + "\n" +
-                ")";
     }
 
 
@@ -45,5 +35,55 @@ public class NFA {
      */
     public void minimize() {
         // TODO
+    }
+
+
+    /*
+     * Convert DFA to NFA just by creating a singleton (one entry set) of transition from every dfa delta transitions.
+     */
+    public static NFA fromDFA(DFA dfa) {
+        // Construct a new delta of singleton transitions (Q_n, w_i) -> Q_m into (Q_n, w_i) -> {Q_M}
+        Map<TransitionInput, Set<Integer>> singletonDelta = dfa.getDelta().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> Set.of(e.getValue())));
+
+        return new NFA(
+                dfa.getQ(),
+                dfa.getSigma(),
+                singletonDelta,
+                dfa.getQ0(),
+                dfa.getF()
+        );
+    }
+
+
+    @Override
+    public String toString() {
+        return  "NFA (\n" +
+                "Q = " + q + ",\n" +
+                "Σ = " + sigma + ",\n" +
+                "δ = " + delta + ",\n" +
+                "q₀ = " + q0 + ",\n" +
+                "F = " + f + "\n" +
+                ")";
+    }
+
+    public Set<Integer> getQ() {
+        return q;
+    }
+
+    public Set<String> getSigma() {
+        return sigma;
+    }
+
+    public Map<TransitionInput, Set<Integer>> getDelta() {
+        return delta;
+    }
+
+    public Integer getQ0() {
+        return q0;
+    }
+
+    public Set<Integer> getF() {
+        return f;
     }
 }
