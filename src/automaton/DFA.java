@@ -84,4 +84,24 @@ public class DFA {
         System.out.println(automaton.run(new String[]{"1", "0"})); // true
         System.out.println(automaton.run(new String[]{"1", "0", "0", "1"})); // true
     }
+
+    public Set<Integer> getQ() {
+        return q;
+    }
+
+    public Set<String> getSigma() {
+        return sigma;
+    }
+
+    public Map<TransitionInput, Integer> getDelta() {
+        return delta;
+    }
+
+    public Integer getQ0() {
+        return q0;
+    }
+
+    public Set<Integer> getF() {
+        return f;
+    }
 }
